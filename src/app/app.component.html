@@ -1,0 +1,81 @@
+<header>
+  <div class="brand" routerLink="/">
+    <img src="/assets/img/me.jpg" class="brand-img" />
+    <img src="/assets/img/lambda.png" class="brand-img" />
+    <h1>Chris Cates<span class="no-mobile">, Software, Robotics and Math</span></h1>
+  </div>
+
+  <a class="mobile-nav-toggle easing" [ngClass]="{'active': this.navActive}" (click)="this.navActive = !this.navActive;">
+    <i class="fa fa-bars"></i>
+  </a>
+
+  <div class="social">
+    <a class="social-link easing" href="https://www.youtube.com/channel/UCmNMVl5gicZyxTjTNLBqjgw" target="_blank">
+      <i class="fab fa-youtube"></i>
+    </a>
+    <a class="social-link easing" routerLink="/simulator">
+      <i class="fas fa-flask"></i>
+    </a>
+  </div>
+</header>
+
+<div class="mobile-nav easing" [ngClass]="{'active': this.navActive}">
+  <div class="social">
+    <a class="easing" href="https://www.youtube.com/channel/UCmNMVl5gicZyxTjTNLBqjgw" target="_blank">
+      <i class="fab fa-youtube"></i> Video on Climate Change
+    </a>
+    <a class="easing" routerLink="/simulator">
+      <i class="fas fa-flask"></i> Phytoremediation and Emission Simulator
+    </a>
+    <a href="https://chriscates.ca" target="_blank" class="easing">
+      <i class="fas fa-home"></i> chriscates.ca
+    </a>
+    <a href="https://github.com/ChrisCates/chess-ai.ts" target="_blank" class="easing">
+      <i class="fab fa-github-square"></i> Source Code on Github
+    </a>
+    <a class="social-link easing">
+      <i class="fas fa-mail-bulk"></i> hello@chriscates.ca
+    </a>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+
+<footer>
+  <div class="footer-brand">
+    <div class="footer-images">
+      <img src="/assets/img/me.jpg" class="brand-img" />
+      <img src="/assets/img/lambda.png" class="brand-img" />
+    </div>
+    <h3>Chris Cates, Software, Robotics and Math</h3>
+  </div>
+  <div class="footer-columns">
+    <div class="column">
+      <div class="links">
+        <a href="https://chriscates.ca" target="_blank" class="easing">
+          <i class="fas fa-home"></i> chriscates.ca
+        </a>
+        <a class="social-link easing" href="https://www.youtube.com/channel/UCmNMVl5gicZyxTjTNLBqjgw" target="_blank">
+          <i class="fab fa-youtube"></i> Video on Climate Change
+        </a>
+        <a class="easing" routerLink="/simulator">
+          <i class="fas fa-flask"></i> Phytoremediation and Emission Simulator
+        </a>
+        <a href="https://github.com/ChrisCates/chess-ai.ts" target="_blank" class="easing">
+          <i class="fab fa-github-square"></i> Source Code on Github
+        </a>
+        <a class="social-link easing">
+          <i class="fas fa-mail-bulk"></i> hello@chriscates.ca
+        </a>
+      </div>
+    </div>
+    <div class="column">
+      <div class="algo">
+        <ng-katex [equation]="this.bayes"></ng-katex>
+      </div>
+      <div class="algo-description">
+        <p>Bayesian Analysis is when you update your prior beliefs after considering new evidence</p>
+      </div>
+    </div>
+  </div>
+</footer>
