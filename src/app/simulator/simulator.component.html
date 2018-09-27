@@ -1,3 +1,26 @@
 <div class="container">
+    <div class="map-indicator">
+        <div class="mi-box">
+            <h3>Amount of GHG Reduced in 1 year:</h3>
+            <h3>100MT</h3>
+        </div>
+        <div class="mi-box">
+            <h3>Amount of Phytoremediated Toxins Reduced in 1 year:</h3>
+            <h3>100MT</h3>
+        </div>
+    </div>
+    <div class="map-gui">
+        <div class="map" id="map">
 
+        </div>
+        <div class="map-list">
+            <div class="country" *ngFor="let country of countries;">
+                <h4>{{country.name}}</h4>
+                <p>Acres of Agriculture: {{country.acres}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="map-controls">
+
+    </div>
 </div>

@@ -1,1 +1,51 @@
 @import "../styles.scss";
+
+$mapHeight: calc(100vh - 300px);
+$minHeight: 600px;
+
+div.map-indicator {
+    background: $g2;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    div.mi-box {
+        display: flex;
+        justify-content: center;
+        padding: 15px;
+        border-bottom: 2px solid $g1;
+        h3:first-of-type {
+            width: 500px;
+        }
+        h3:last-of-type {
+            width: 150px;
+        }
+    }
+}
+
+div.map-gui {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    height: $mapHeight;
+    min-height: $minHeight;
+    display: flex;
+    flex-direction: row;
+    div.map {
+        display: block;
+        width: calc(100% - 300px);
+        height: 100%;
+    }
+    div.map-list {
+        width: 300px;
+        height: 100%;
+        border-left: 2px solid $g2;
+        border-right: 2px solid $g2;
+        background: $g1;
+        overflow: auto;
+        div.country {
+            padding: 15px;
+            width: 100%;
+            border-bottom: 2px solid $g2;
+        }
+    }
+}
