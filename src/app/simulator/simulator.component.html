@@ -1,12 +1,20 @@
 <div class="container">
+    <div class="annotations">
+        <h2>Carbon Simulator</h2>
+        <p>An estimated 0.4 Tonnes of CO2 are absorbed per acre of Carbon Sequestrated agriculture.</p>
+    </div>
     <div class="map-indicator">
         <div class="mi-box">
-            <h3>Amount of GHG Reduced in 1 year:</h3>
-            <h3>100MT</h3>
+            <h3>Amount of GHG Produced cumulatively (as of 2014):</h3>
+            <h3>{{this.ghgInc}}MT</h3>
         </div>
         <div class="mi-box">
-            <h3>Amount of Phytoremediated Toxins Reduced in 1 year:</h3>
-            <h3>100MT</h3>
+            <h3>Amount of GHG Reduced in 1 year:</h3>
+            <h3>{{this.ghgDec * this.acreReduction}}MT</h3>
+        </div>
+        <div class="mi-box">
+            <h3>Timeline for Carbon Neutrality:</h3>
+            <h3>{{this.timeline}} years</h3>
         </div>
     </div>
     <div class="map-gui">
@@ -14,13 +22,27 @@
 
         </div>
         <div class="map-list">
-            <div class="country" *ngFor="let country of countries;">
-                <h4>{{country.name}}</h4>
-                <p>Acres of Agriculture: {{country.acres}}</p>
+            <div class="country-search">
+                <input type="text" placeholder="Search..." [(ngModel)]="this.search"/>
+            </div>
+            <div class="country" *ngFor="let country of countries;" [ngClass]="{ 'active': country.country.indexOf(this.search) !== -1 }">
+                <h4>{{country.country}} (impact: {{this.getImpact(country.Code)}}% of CO2)</h4>
+                <p>+Agriculture: {{country.acres}}/acres</p>
+                <p>CO2+: {{country.co2_mt}}MT</p>
+                <p>CO2-: {{country.acres * this.acreReduction}}MT</p>
+                <div class="buttons">
+                    <input type="number" [(ngModel)]="country.io"/>
+                    <a class="button red easing" (click)="this.reduceAgri(country);">
+                        <i class="fas fa-minus-circle"></i>
+                    </a>
+                    <a class="button green easing" (click)="this.increaseAgri(country);">
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                    <p>
+                        Acres
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="map-controls">
-
     </div>
 </div>

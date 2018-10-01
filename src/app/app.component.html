@@ -13,7 +13,10 @@
     <a class="social-link easing" href="https://www.youtube.com/channel/UCmNMVl5gicZyxTjTNLBqjgw" target="_blank">
       <i class="fab fa-youtube"></i>
     </a>
-    <a class="social-link easing" routerLink="/simulator">
+    <a class="social-link easing" routerLink="/article">
+      <i class="fas fa-newspaper"></i>
+    </a>
+    <a class="social-link easing" routerLink="/">
       <i class="fas fa-flask"></i>
     </a>
   </div>
@@ -24,8 +27,11 @@
     <a class="easing" href="https://www.youtube.com/channel/UCmNMVl5gicZyxTjTNLBqjgw" target="_blank">
       <i class="fab fa-youtube"></i> Video on Climate Change
     </a>
-    <a class="easing" routerLink="/simulator">
-      <i class="fas fa-flask"></i> Phytoremediation and Emission Simulator
+    <a class="social-link easing" routerLink="/article">
+      <i class="fas fa-newspaper"></i> Article on Climate Change
+    </a>
+    <a class="easing" routerLink="/">
+      <i class="fas fa-flask"></i> Carbon Simulator
     </a>
     <a href="https://chriscates.ca" target="_blank" class="easing">
       <i class="fas fa-home"></i> chriscates.ca
@@ -37,6 +43,36 @@
       <i class="fas fa-mail-bulk"></i> hello@chriscates.ca
     </a>
   </div>
+</div>
+
+<style>
+  #loading-screen-normal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1E1E1E;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  #loading-screen-normal.active {
+    opacity: 1;
+  }
+
+  #loading-screen-normal img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+</style>
+<div id="loading-screen-normal" class="easing" [ngClass]="{'active': this.loading()}">
+  <img src="/assets/img/lambda.png"/>
 </div>
 
 <router-outlet></router-outlet>
@@ -58,8 +94,11 @@
         <a class="social-link easing" href="https://www.youtube.com/channel/UCmNMVl5gicZyxTjTNLBqjgw" target="_blank">
           <i class="fab fa-youtube"></i> Video on Climate Change
         </a>
-        <a class="easing" routerLink="/simulator">
-          <i class="fas fa-flask"></i> Phytoremediation and Emission Simulator
+        <a class="social-link easing" routerLink="/article">
+          <i class="fas fa-newspaper"></i> Article on Climate Change
+        </a>
+        <a class="easing" routerLink="/">
+          <i class="fas fa-flask"></i> Carbon Simulator
         </a>
         <a href="https://github.com/ChrisCates/chess-ai.ts" target="_blank" class="easing">
           <i class="fab fa-github-square"></i> Source Code on Github

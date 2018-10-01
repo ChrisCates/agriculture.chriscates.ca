@@ -3,10 +3,27 @@
 $mapHeight: calc(100vh - 300px);
 $minHeight: 600px;
 
+div.annotations {
+    background: $g2;
+    border-bottom: 2px solid $g1;
+    width: 100%;
+    margin: auto;
+    h2 {
+        font-weight: 400;
+        text-align: center;
+        padding: 15px;
+    }
+    p {
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+}
+
 div.map-indicator {
     background: $g2;
     width: 100%;
-    max-width: 1200px;
     margin: auto;
     div.mi-box {
         display: flex;
@@ -19,12 +36,20 @@ div.map-indicator {
         h3:last-of-type {
             width: 150px;
         }
+
+        @media (max-width: 600px) {
+            flex-wrap: wrap;
+            h3 {
+                width: 100%;
+                text-align: center;
+                font-size: 14px;
+            }
+        }
     }
 }
 
 div.map-gui {
     width: 100%;
-    max-width: 1200px;
     margin: auto;
     height: $mapHeight;
     min-height: $minHeight;
@@ -35,6 +60,16 @@ div.map-gui {
         width: calc(100% - 300px);
         height: 100%;
     }
+
+    @media (max-width: 600px) {
+        height: auto;
+        flex-wrap: wrap;
+        div.map {
+            width: 100%;
+            height: 300px;
+        }
+    }
+
     div.map-list {
         width: 300px;
         height: 100%;
@@ -42,10 +77,71 @@ div.map-gui {
         border-right: 2px solid $g2;
         background: $g1;
         overflow: auto;
+
+        @media (max-width: 600px) {
+            width: 100%;
+            height: 500px;
+        }
+
+        padding-top: 50px;
+        position: relative;
+
+        div.country-search {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 50px;
+            border: 2px solid $g1;
+            input {
+                width: 100%;
+                height: 50px;
+                background: $g2;
+                color: white;
+                padding: 0 15px;
+                font-size: 18px;
+                border: none;
+            }
+        }
+
         div.country {
             padding: 15px;
             width: 100%;
             border-bottom: 2px solid $g2;
+            display: none;
+            &.active {
+                display: block;
+            }
+
+            div.buttons {
+                padding: 15px 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                input {
+                    width: 100px;
+                    height: 40px;
+                    background: $g2;
+                    border-radius: 4px;
+                    color: white;
+                    padding: 0 5px;
+                    border: none;
+                    font-size: 18px;
+                }
+                a.button {
+                    margin: 0 5px;
+                    border-radius: 4px;
+                    width: 75px;
+                    height: 40px;
+                    background: black;
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
         }
     }
 }

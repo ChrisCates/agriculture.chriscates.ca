@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 
 import { KatexModule } from 'ng-katex';
 
+import { LoadingService } from './loading.service';
+
 import { AppComponent } from './app.component';
 import { IndexComponent } from './index/index.component';
 import { SimulatorComponent } from './simulator/simulator.component';
@@ -19,12 +21,14 @@ import { SimulatorComponent } from './simulator/simulator.component';
     BrowserModule,
     FormsModule,
     RouterModule.forRoot([
-      { 'path': '', 'component': IndexComponent },
-      { 'path': 'simulator', 'component': SimulatorComponent }
+      { 'path': 'article', 'component': IndexComponent },
+      { 'path': '', 'component': SimulatorComponent }
     ]),
     KatexModule
   ],
-  providers: [],
+  providers: [
+    LoadingService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
