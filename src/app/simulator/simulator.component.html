@@ -1,46 +1,97 @@
 <div class="container">
     <div class="annotations">
-        <h2>Carbon Simulator</h2>
-        <p>An estimated 0.4 Tonnes of CO2 are absorbed per acre of Carbon Sequestrated agriculture.</p>
-    </div>
-    <div class="map-indicator">
-        <div class="mi-box">
-            <h3>Amount of GHG Produced cumulatively (as of 2014):</h3>
-            <h3>{{this.ghgInc}}MT</h3>
-        </div>
-        <div class="mi-box">
-            <h3>Amount of GHG Reduced in 1 year:</h3>
-            <h3>{{this.ghgDec * this.acreReduction}}MT</h3>
-        </div>
-        <div class="mi-box">
-            <h3>Timeline for Carbon Neutrality:</h3>
-            <h3>{{this.timeline}} years</h3>
-        </div>
+        <h2>Sustainable Agriculture Simulator</h2>
     </div>
     <div class="map-gui">
-        <div class="map" id="map">
-
-        </div>
-        <div class="map-list">
-            <div class="country-search">
-                <input type="text" placeholder="Search..." [(ngModel)]="this.search"/>
+        <div class="map-inputs">
+            <div class="map-input">
+                <div class="img">
+                    <img src="/assets/vegetables.png"/>
+                </div>
+                <div class="input">
+                    <h3>Additional Agriculture</h3>
+                    <input type="text" placeholder="Per 1000 acres" [(ngModel)]="this.inputAgri"/>
+                </div>
             </div>
-            <div class="country" *ngFor="let country of countries;" [ngClass]="{ 'active': country.country.indexOf(this.search) !== -1 }">
-                <h4>{{country.country}} (impact: {{this.getImpact(country.Code)}}% of CO2)</h4>
-                <p>+Agriculture: {{country.acres}}/acres</p>
-                <p>CO2+: {{country.co2_mt}}MT</p>
-                <p>CO2-: {{country.acres * this.acreReduction}}MT</p>
-                <div class="buttons">
-                    <input type="number" [(ngModel)]="country.io"/>
-                    <a class="button red easing" (click)="this.reduceAgri(country);">
-                        <i class="fas fa-minus-circle"></i>
-                    </a>
-                    <a class="button green easing" (click)="this.increaseAgri(country);">
-                        <i class="fas fa-plus-circle"></i>
-                    </a>
-                    <p>
-                        Acres
-                    </p>
+            <div class="map-buttons">
+                <a class="button red easing" (click)="this.rmAgri()">
+                    Remove
+                </a>
+                <a class="button green easing" (click)="this.addAgri()">
+                    Add
+                </a>
+            </div>
+            <div class="map-input-info">
+                <div class="info-stat">
+                    <div class="info-label">
+                        {{this.totalAgri.toFixed(4)}} Acres (per 1000)
+                    </div>
+                    <div class="info-value">
+                        {{this.offsetAgri.toFixed(4)}}/MT Offset
+                    </div>
+                </div>
+                <p>
+                    *About 0.4MT of CO2 is absorbed with 1 acre of
+                    carbon sequestrated agriculture.
+                </p>
+            </div>
+            <div class="map-input">
+                <div class="img">
+                    <img src="/assets/sprout.png"/>
+                </div>
+                <div class="input">
+                    <h3>Additional Trees Planted</h3>
+                    <input type="text" placeholder="Per 1000 acres" [(ngModel)]="this.inputForest"/>
+                </div>
+            </div>
+            <div class="map-buttons">
+                <a class="button red easing" (click)="this.rmForest()">
+                    Remove
+                </a>
+                <a class="button green easing" (click)="this.addForest()">
+                    Add
+                </a>
+            </div>
+            <div class="map-input-info">
+                <div class="info-stat">
+                    <div class="info-label">
+                        {{this.totalForest.toFixed(4)}} Acres (per 1000)
+                    </div>
+                    <div class="info-value">
+                        {{this.offsetForest.toFixed(4)}}/MT Offset
+                    </div>
+                </div>
+                <p>
+                    *About 0.0025MT of CO2 is absorbed with 1 acre of
+                    forests.
+                </p>
+                <div class="info-stat total">
+                    <div class="info-label">
+                        {{(this.totalAgri + this.totalForest) || 0}} Combined Acres
+                    </div>
+                    <div class="info-value">
+                        {{(this.offsetAgri + this.offsetForest).toFixed(4) || 0}}/MT Total Offset
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="map" id="map"></div>
+    </div>
+    <div class="stats">
+        <div class="stats-title">
+            <h2>ETA for Carbon Neutrality <span class="small">*as of 2014</span></h2>
+        </div>
+        <div class="stats-list">
+            <div class="country" *ngFor="let country of this.countries;">
+                <h3>{{country.country}}</h3>
+                <span class="code">{{country.Code}}</span>
+                <div class="stat-info">
+                    <h4>CO2 Produced (in MT)</h4>
+                    <p>{{country.co2_mt}}</p>
+                </div>
+                <div class="stat-info">
+                    <h4>ETA for neutrality with current offset</h4>
+                    <p>{{country.eta || 'N/A'}}</p>
                 </div>
             </div>
         </div>

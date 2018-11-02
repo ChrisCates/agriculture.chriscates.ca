@@ -17,14 +17,17 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   public map;
   public geo;
 
-  public search = '';
+  public inputAgri = '';
+  public inputForest = '';
 
-  public ghgInc = 0;
-  public ghgDec = 0;
+  public totalAgri = 0;
+  public totalForest = 0;
 
-  public timeline = 'N/A';
+  public offsetAgri = 0;
+  public offsetForest = 0;
 
   public acreReduction = 0.0000004;
+  public acreReductionForest = 0.0000000025;
 
   public countries = [];
 
@@ -38,107 +41,86 @@ export class SimulatorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ls.loading = true;
-    this.formatData()
-    .then(() => {
-      this.createMap()
-      .then(() => {
-        this.ls.loading = false;
-      });
+
+    this.countries = data;
+
+    this.createMap().then(() => {
+      this.ls.loading = false;
     });
   }
 
-  getColor(name) {
-    const { value } = this.getRatio(name);
-    const hue = ((1 - value) * 120).toString(10);
-    return `hsl(${hue}, 100%, 50%)`;
-  }
-
-  getImpact(country) {
-    const { value, change } = this.getRatio(country);
-    return (change * 100).toFixed(2);
-  }
-
-  getRatio(c) {
-    let value = 0.5;
-    let emissions = 0;
-    let acres = 0;
-    for (let i = 0; i < this.countries.length; i++) {
-      const country = this.countries[i];
-      if (c === country.Code) {
-        emissions = country['co2_mt'];
-        acres = country['acres'];
-        break;
-      }
+  rmAgri() {
+    if (this.inputAgri && !isNaN(parseFloat(this.inputAgri))) {
+      this.totalAgri -= parseFloat(this.inputAgri);
+      this.calculateReduction();
     }
+  }
 
-    const diff = emissions - (acres * this.acreReduction);
-    const change = diff / this.ghgInc;
-
-    value += change;
-
-    if (value > 1) {
-      value = 1;
-    } else if (value < 0) {
-      value = 0;
+  addAgri() {
+    if (this.inputAgri && !isNaN(parseFloat(this.inputAgri))) {
+      this.totalAgri += parseFloat(this.inputAgri);
+      this.calculateReduction();
     }
+  }
 
-    if (c === 'CAN') {
-      console.log(c, acres, diff, change);
+  rmForest() {
+    if (this.inputForest && !isNaN(parseFloat(this.inputForest))) {
+      this.totalForest -= parseFloat(this.inputForest);
+      this.calculateReduction();
     }
-
-    return { value, change } ;
   }
 
-  formatData() {
-    return new Promise((resolve, reject) => {
-      this.countries = data;
-      this.ghgInc = 0;
-
-      this.countries = this.countries.map(country => {
-        this.ghgInc += parseFloat(country['co2_mt']);
-
-        country['acres'] = 0;
-        country['io'] = 1000;
-        return country;
-      });
-
-      return resolve('Complete');
-    });
-  }
-
-  reduceAgri(country) {
-    country['acres'] -= country['io'];
-    this.calculateReduction();
-  }
-
-  increaseAgri(country) {
-    country['acres'] += country['io'];
-    this.calculateReduction();
+  addForest() {
+    if (this.inputForest && !isNaN(parseFloat(this.inputForest))) {
+      this.totalForest += parseFloat(this.inputForest);
+      this.calculateReduction();
+    }
   }
 
   calculateReduction() {
-    this.ghgDec = 0;
+    this.offsetAgri = this.totalAgri * 1000 * this.acreReduction;
+    this.offsetForest = this.totalForest * 1000 * this.acreReductionForest;
 
-    this.countries.forEach(country => {
-      this.ghgDec += country['acres'];
+    const total = this.offsetAgri + this.offsetForest;
+
+    this.countries = this.countries.map(country => {
+      country['eta'] = (country['co2_mt'] / total) + ' years';
+      return country;
     });
 
-    const fmtGhgDec = this.ghgDec * this.acreReduction;
+    this.updateLayers();
+  }
 
-    if (this.ghgDec > 0) {
-      this.timeline = (this.ghgInc / fmtGhgDec).toFixed(2);
-    } else {
-      this.timeline = 'N/A';
+  getColor(name) {
+    let country;
+    for (let i = 0; i < this.countries.length; i++) {
+      country = this.countries[i];
+      if (country.Code === name) { break; }
     }
 
-    this.updateLayers();
+    const offset = this.offsetAgri + this.offsetForest;
+    let value = 0.5;
+
+    if (country && offset > 0) {
+      const co2 = parseFloat(country.co2_mt);
+      value = offset  / ((co2 + offset) / 2) * 100;
+      if (value > 1) {
+        value = 1;
+      }
+    }
+
+    return this.getHSL(1 - value);
+  }
+
+  getHSL(value = 0.5, hue0 = 120, hue1 = 0) {
+    const hue = (value * (hue1 - hue0)) + hue0;
+    return `hsl(${hue}, 100%, 50%)`;
   }
 
   updateLayers() {
     let max = 0;
     this.geo.eachLayer(layer => {
       if (max < 5 || layer.feature.id === 'CAN') {
-        console.log(layer.feature.id, this.getColor(layer.feature.properties.name));
         max++;
       }
 
@@ -155,12 +137,13 @@ export class SimulatorComponent implements OnInit, OnDestroy {
 
   createMap() {
     return new Promise((resolve, reject) => {
-      this.map = L.map('map').setView([62.2270, -105.3809], 4);
+      this.map = L.map('map').setView([62.2270, -105.3809], 2);
       L.tileLayer(
         'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png',
         {
             attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
-            maxZoom: 4,
+            minZoom: 2,
+            maxZoom: 2,
             subdomains: 'abcd'
         }
       ).addTo(this.map);
@@ -186,7 +169,7 @@ export class SimulatorComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'));
         return resolve('Complete');
-      }, 1000);
+      }, 1500);
     });
   }
 

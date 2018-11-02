@@ -1,6 +1,6 @@
 @import "../styles.scss";
 
-$mapHeight: calc(100vh - 300px);
+$mapHeight: calc(100vh - 320px);
 $minHeight: 600px;
 
 div.annotations {
@@ -21,33 +21,6 @@ div.annotations {
     }
 }
 
-div.map-indicator {
-    background: $g2;
-    width: 100%;
-    margin: auto;
-    div.mi-box {
-        display: flex;
-        justify-content: center;
-        padding: 15px;
-        border-bottom: 2px solid $g1;
-        h3:first-of-type {
-            width: 500px;
-        }
-        h3:last-of-type {
-            width: 150px;
-        }
-
-        @media (max-width: 600px) {
-            flex-wrap: wrap;
-            h3 {
-                width: 100%;
-                text-align: center;
-                font-size: 14px;
-            }
-        }
-    }
-}
-
 div.map-gui {
     width: 100%;
     margin: auto;
@@ -59,6 +32,7 @@ div.map-gui {
         display: block;
         width: calc(100% - 300px);
         height: 100%;
+        pointer-events: none;
     }
 
     @media (max-width: 600px) {
@@ -69,77 +43,156 @@ div.map-gui {
             height: 300px;
         }
     }
+}
 
-    div.map-list {
-        width: 300px;
-        height: 100%;
-        border-left: 2px solid $g2;
-        border-right: 2px solid $g2;
-        background: $g1;
-        overflow: auto;
-
-        @media (max-width: 600px) {
-            width: 100%;
-            height: 500px;
-        }
-
-        padding-top: 50px;
-        position: relative;
-
-        div.country-search {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 50px;
-            border: 2px solid $g1;
-            input {
-                width: 100%;
+div.map-inputs {
+    width: 320px;
+    height: $mapHeight;
+    min-height: $minHeight;
+    div.map-input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        div.img {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 50px;
                 height: 50px;
-                background: $g2;
-                color: white;
-                padding: 0 15px;
-                font-size: 18px;
-                border: none;
             }
         }
+        div.input {
+            width: calc(100% - 80px);
+            padding-right: 15px;
+            h3 {
+                font-weight: 700;
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            input {
+                display: block;
+                background: $g3;
+                color: white;
+                border-radius: 5px;
+                width: 100%;
+                height: 40px;
+                border: none;
+                padding: 0 15px;
+                font-size: 16px;
+            }
+        }
+    }
+
+    div.map-input-info {
+        padding: 15px;
+        p {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        div.info-stat {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            padding-bottom: 15px;
+            &.total {
+                padding-top: 30px;
+                font-size: 18px;
+                font-weight: 400;
+                flex-direction: column;
+                div.info-label, div.info-value {
+                    width: 100%;
+                    margin-bottom: 15px;
+                }
+            }
+
+            div.info-label {
+                width: 50%;
+                text-align: right;
+            }
+            div.info-value {
+                width: 50%;
+                text-align: right;
+            }
+        }
+    }
+
+    div.map-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 15px 0 15px;
+        a.button {
+            margin-left: 15px;
+            width: 80px;
+            height: 40px;
+            border-radius: 5px;
+            background: $g3;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:hover {
+                background: $g2;
+            }
+        }
+    }
+}
+
+div.stats {
+    div.stats-title {
+        width: 100%;
+        height: 80px;
+        background: $g3;
+        border-top: 2px solid $g1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 15px;
+        h2 {
+            font-size: 32px;
+            font-weight: 300;
+            span.small {
+                font-size: 14px;
+                font-weight: 700;
+            }
+        }
+    }
+    div.stats-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-left: 1px solid $g3;
+        border-right: 1px solid $g3;
 
         div.country {
+            border: 1px solid $g3;
+            width: 300px;
             padding: 15px;
-            width: 100%;
-            border-bottom: 2px solid $g2;
-            display: none;
-            &.active {
-                display: block;
+            position: relative;
+            span.code {
+                position: absolute;
+                right: 15px;
+                top: 15px;
+                font-weight: 700;
+                font-size: 14px;
             }
-
-            div.buttons {
-                padding: 15px 10px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                input {
-                    width: 100px;
-                    height: 40px;
-                    background: $g2;
-                    border-radius: 4px;
-                    color: white;
-                    padding: 0 5px;
-                    border: none;
-                    font-size: 18px;
-                }
-                a.button {
-                    margin: 0 5px;
-                    border-radius: 4px;
-                    width: 75px;
-                    height: 40px;
-                    background: black;
-                    color: white;
-                    font-size: 18px;
-                    font-weight: bold;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+            h3 {
+                font-weight: 300;
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            div.stat-info {
+                margin-bottom: 15px;
+                h4 {
+                    font-size: 16px;
+                    font-size: 700;
                 }
             }
         }
